@@ -1,15 +1,18 @@
-import React, {Fragment} from "react";
+import React from "react";
 import Header from './components/header/Header';
 import AppBody from './components/app-body/AppBody';
+import configureStore from './redux/store/store';
+import { Provider } from 'react-redux'
 
-//TODO: Redux?
+
+const store = configureStore()
 
 function App() {
   return (
-      <Fragment>
+      <Provider store={store}>
         <Header/>
         <AppBody/>
-      </Fragment>
+      </Provider>
   );
 }
 

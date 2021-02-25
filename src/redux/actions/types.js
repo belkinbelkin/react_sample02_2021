@@ -1,0 +1,3 @@
+export const SET_USER_LIST = 'SET_USER_LIST'
+export const SET_TOTAL_PAGES = 'SET_TOTAL_PAGES';
+export const SET_TOTAL_USERS = 'SET_TOTAL_USERS';

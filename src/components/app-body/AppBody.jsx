@@ -6,6 +6,8 @@ import './AppBody.css';
 import UsersPagination from '../pagination/Pagination';
 import {FiSearch} from 'react-icons/fi';
 import Loading from '../loading/Loading';
+import {setTotalPages, setTotalUsers, setUserList} from '../../redux/actions/userActions';
+import {connect} from 'react-redux';
 
 const inputProps = {
   step: 300,
@@ -17,16 +19,13 @@ const inputProps = {
  * Main component, holds the state of the app
  */
 
-export default function AppBody() {
+function AppBody({users, setUserList, setTotalPages, setTotalUsers}) {
 
   useEffect(() => {
     fetchData(1);
   }, []);
 
-  const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalUsers, setTotalUsers] = useState(0);
   const [searchString, setSearchString] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -43,7 +42,7 @@ export default function AppBody() {
     setLoading(true);
     const response = await getUsers(pageNumber);
     if (response.data) {
-      setUsers(response.data.data);
+      setUserList(response.data.data);
       setTotalPages(response.data.total_pages);
       setTotalUsers(response.data.total);
     }
@@ -61,7 +60,7 @@ export default function AppBody() {
       setLoading(true);
       const response = await searchUsers(searchStringInput);
       if (response.data) {
-        setUsers(response.data.data);
+        setUserList(response.data.data);
       }
       setLoading(false);
     } else if (searchStringInput.length < 3 && searchString.length === 2) {
@@ -86,15 +85,38 @@ export default function AppBody() {
                      }}
           />
           <Box>
-            <span>Total users: {totalUsers}</span>
+            <span>Total users: {users.totalUsers}</span>
           </Box>
         </Box>
         <Grid container direction="column" justify="space-around" className='body-wrapper'>
           {
-            users && users.length > 0 ? users.map(user => <UserCard key={user.id} user={user}/>) : <span>No data</span>
+            users.userList && users.userList.length > 0 ? users.userList.map(user => <UserCard key={user.id} user={user}/>) : <span>No data</span>
           }
-          {users && users.length > 0 && <UsersPagination current={page} total={totalPages} callback={choosePage}/>}
+          {users.userList && users.userList.length > 0 && <UsersPagination current={page} total={users.totalPages} callback={choosePage}/>}
         </Grid>
         <Loading show={loading}/>
       </Fragment>);
 }
+
+const mapStateToProps = state => {
+  return {
+    users: state.users,
+  }
+}
+
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setUserList: (userList) => {
+      dispatch(setUserList(userList))
+    },
+    setTotalPages: (totalPages) => {
+      dispatch(setTotalPages(totalPages))
+    },
+    setTotalUsers: (totalUsers) => {
+      dispatch(setTotalUsers(totalUsers))
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppBody)
