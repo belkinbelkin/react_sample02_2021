@@ -1,0 +1,26 @@
+.header-wrapper {
+    background-color: #1976D2;
+    padding: 1em;
+    color: #fff;
+    font-family: Roboto, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-wrapper-text {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.header-label-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+input {
+    color: #fff;
+}
