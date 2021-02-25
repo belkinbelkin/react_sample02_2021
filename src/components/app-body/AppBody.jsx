@@ -37,6 +37,7 @@ export default function AppBody() {
 
   /**
    * fetches users by page number
+   * params: pageNumber - integer
    */
   const fetchData = async (pageNumber) => {
     setLoading(true);
@@ -52,6 +53,7 @@ export default function AppBody() {
   /***
    * Searches users by username if search string is longer than 3 characters
    * fetches default data if the user deletes characters
+   * params: searchStringInput - string
    */
   const search = async (searchStringInput) => {
     setSearchString(searchStringInput);
@@ -89,9 +91,9 @@ export default function AppBody() {
         </Box>
         <Grid container direction="column" justify="space-around" className='body-wrapper'>
           {
-            users && users.length ? users.map(user => <UserCard key={user.id} user={user}/>) : <span>No data</span>
+            users && users.length > 0 ? users.map(user => <UserCard key={user.id} user={user}/>) : <span>No data</span>
           }
-          {users.length > 0 && <UsersPagination current={page} total={totalPages} callback={choosePage}/>}
+          {users && users.length > 0 && <UsersPagination current={page} total={totalPages} callback={choosePage}/>}
         </Grid>
         <Loading show={loading}/>
       </Fragment>);
